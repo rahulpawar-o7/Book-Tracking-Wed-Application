@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Tracker</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h1><%= title %></h1>
+
+  <form action="/add" method="POST" class="add-form">
+    <input type="text" name="title" placeholder="Book Title" required>
+    <input type="text" name="author" placeholder="Author Name">
+    <input type="number" name="rating" placeholder="Rating (1-5)" min="1" max="5" required>
+    <input type="date" name="date_read" required>
+    <input type="text" name="isbn" placeholder="ISBN (e.g., 9781612620244)" required>
+    <textarea name="notes" placeholder="Write your notes here..."></textarea>
+    <button type="submit">Add Book</button>
+  </form>
+
+  <hr>
+
+  <div class="book-list">
+    <% for(let book of listItems) { %>
+      <div class="book-card">
+        <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg" alt="Cover of <%= book.title %>">
+        
+        <h2><%= book.title %></h2>
+        <p><strong>Author:</strong> <%= book.author %></p>
+        <p><strong>Rating:</strong> <%= book.rating %> / 5</p>
+        <p><strong>Date Read:</strong> <%= book.date_read %></p>
+        <p><strong>Notes:</strong> <%= book.notes %></p>
+        <form action="/edit" method="POST" class="edit-form">
+          <input type="hidden" name="updateItemId" value="<%= book.id %>">
+          
+          <label>Update Rating:</label>
+          <input type="number" name="updatedRating" value="<%= book.rating %>" min="1" max="5" required>
+          
+          <label>Update Notes:</label>
+          <textarea name="updatedNotes" required><%= book.notes %></textarea>
+          
+          <button type="submit" style="background-color: blue; color: white;">Save Changes</button>
+
+
+        <form action="/delete" method="POST">
+          
+
+        <input type="hidden" name="deleteItemId" value="<%= book.id %>">
+        <button type="submit" style="background-color: red; color: white;">Delete Book</button>
+      </form>
+      </div>
+    <% } %>
+  </div>
+</body>
+</html>
