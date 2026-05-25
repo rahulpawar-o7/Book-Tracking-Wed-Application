@@ -41,6 +41,26 @@ app.get("/", async (req, res) => {
   }
 });
 
+// Add New Book Route
+app.post("/add", async (req, res) => {
+  // Form se aane wala data destructure kar rahe hain
+  const { title, author, rating, date_read, isbn, notes } = req.body;
+
+  try {
+    // Database me data INSERT karne ki SQL query
+    await db.query(
+      "INSERT INTO books (title, author, rating, date_read, isbn, notes) VALUES ($1, $2, $3, $4, $5, $6)",
+      [title, author, rating, date_read, isbn, notes]
+    );
+    
+    // Data save hone ke baad wapas home page par bhej do
+    res.redirect("/");
+  } catch (error) {
+    console.log("Error inserting data:", error);
+    res.status(500).send("Error adding book to the database.");
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
