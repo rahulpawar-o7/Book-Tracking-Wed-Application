@@ -40,14 +40,14 @@
           <label>Update Notes:</label>
           <textarea name="updatedNotes" required><%= book.notes %></textarea>
           
-          <button type="submit" style="background-color: blue; color: white;">Save Changes</button>
+          <button type="submit" style="background-color: #478B8D; color: white;">Save Changes</button>
 
 
         <form action="/delete" method="POST">
           
 
         <input type="hidden" name="deleteItemId" value="<%= book.id %>">
-        <button type="submit" style="background-color: red; color: white;">Delete Book</button>
+        <button type="submit" style="background-color: #FF5722; color: white;">Delete Book</button>
       </form>
       </div>
     <% } %>
