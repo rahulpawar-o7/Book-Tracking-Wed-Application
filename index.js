@@ -3,13 +3,17 @@ import bodyParser from "body-parser";
 import pg from "pg";
 import axios from "axios";
 
+// Create Express app
 const app = express();
 const port = 3000;
 
-
+// Middleware setup
 app.use(express.static("public")); // CSS aur images serve karne ke liye
 app.use(bodyParser.urlencoded({ extended: true })); // HTML form ka data read karne ke liye
+// Set EJS as the templating engine
+app.set("view engine", "ejs");
 
+// PostgreSQL database connection setup
 const db = new pg.Client({
     user: "postgres",
     host: "localhost",
@@ -17,13 +21,13 @@ const db = new pg.Client({
     password: "10256",
     port: 5434,
 });
-
+// Connect to the database
 db.connect()
     .then(() => console.log("Database connected successfully! 🎉"))
     .catch((err) => console.error("Database connection error ❌", err.stack));
 
 
-
+// Home Route - Display Books
 app.get("/", async (req, res) => {
   try {
    
@@ -61,12 +65,10 @@ app.post("/add", async (req, res) => {
   }
 });
 
-
+// Delete Book Route
 app.post("/delete", async (req, res) => {
   const deleteId = req.body.deleteItemId; 
-
-  try {
-    
+  try {   
     await db.query("DELETE FROM books WHERE id = $1", [deleteId]);
     res.redirect("/"); 
   } catch (error) {
